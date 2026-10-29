@@ -1,0 +1,47 @@
+[
+  {
+    "step": 1,
+    "tool": "read_asset",
+    "arguments": {
+      "asset_id": "M05"
+    },
+    "reason": "Read requested asset before review.",
+    "observation": {
+      "ok": true,
+      "asset": {
+        "title": "人工复核素材",
+        "description": "需人工判断的合成示例",
+        "rights": "cleared",
+        "owner": "demo-content-team",
+        "needs_human_review": true
+      },
+      "missing": []
+    },
+    "next_action": "check_rules"
+  },
+  {
+    "step": 2,
+    "tool": "check_rules",
+    "arguments": {},
+    "reason": "Check completeness, rights, and content policy.",
+    "observation": {
+      "ok": true,
+      "status": "review_required",
+      "reasons": [
+        "human_review_required"
+      ]
+    },
+    "next_action": "finish"
+  },
+  {
+    "step": 3,
+    "tool": "finish",
+    "arguments": {},
+    "reason": "Review did not pass; stop scheduling and expose required action.",
+    "observation": {
+      "ok": true,
+      "loop_finished": true
+    },
+    "next_action": "end:completed"
+  }
+]

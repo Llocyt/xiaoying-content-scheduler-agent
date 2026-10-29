@@ -1,0 +1,99 @@
+{
+  "generated_at": "2026-10-29T17:04:37.005909+00:00",
+  "mode": "mock",
+  "source_sha256": {
+    "src/scheduler/__init__.py": "15fe9e0586da6919c6f12b1cc2d7be5ba456f811ed0bceaaad6391c26ae30d9e",
+    "src/scheduler/__main__.py": "c8123d621a746cc01dd723a02a201f2c83718febe93cd4d0fcf7f1391ed72ba5",
+    "src/scheduler/agent.py": "7af8e6b58c12c49cbe2a8159f4202ce79d6bdc3063e87f5233cc84e60084d80b",
+    "src/scheduler/domain.py": "74ffb0f1dcfb8a39dac0b73a2c33d53b473cd0023a1e8311e895406ee01fc8cf",
+    "src/scheduler/model.py": "7d289cb9298a866bf4fb45809cf91d7ec5ac14726951b0b11767c29df8279b6f",
+    "src/scheduler/tools.py": "4963d840c616e31ee6097adbd8901a596da5b70fb1e42714bfb81b75c23f25a5",
+    "scripts/verify.py": "ec18b9f453ee5fab46008ed5018a3fad9dc95cb845b668964a4878b8fcab4899",
+    "tests/test_cli.py": "be49d42598bba40f6256b3b110ddab6718ebdd2745271dc6cc7bba981d604f4f",
+    "tests/test_scheduler.py": "d63164042a29008653d5d7363d002a4f67fbca4f039a852d62a74aa457e19f89"
+  },
+  "real_model_verified": false,
+  "cases": [
+    {
+      "case": "normal",
+      "expected": "completed",
+      "actual": "completed",
+      "passed": true
+    },
+    {
+      "case": "duplicate",
+      "expected": "existing",
+      "actual": "existing",
+      "passed": true
+    },
+    {
+      "case": "missing",
+      "expected": "incomplete",
+      "actual": "incomplete",
+      "passed": true
+    },
+    {
+      "case": "risk",
+      "expected": "blocked",
+      "actual": "blocked",
+      "passed": true
+    },
+    {
+      "case": "conflict",
+      "expected": "pending_confirmation",
+      "actual": "pending_confirmation",
+      "passed": true
+    },
+    {
+      "case": "confirm_pending",
+      "expected": "updated",
+      "actual": "updated",
+      "passed": true
+    },
+    {
+      "case": "save_failure",
+      "expected": "save_failed",
+      "actual": "save_failed",
+      "passed": true
+    },
+    {
+      "case": "metadata_recovery",
+      "expected": "completed",
+      "actual": "completed",
+      "passed": true
+    },
+    {
+      "case": "human_review",
+      "expected": "review_required",
+      "actual": "review_required",
+      "passed": true
+    },
+    {
+      "case": "confirmed_alternative",
+      "expected": "completed",
+      "actual": "completed",
+      "passed": true
+    },
+    {
+      "case": "no_available_slot",
+      "expected": "incomplete",
+      "actual": "incomplete",
+      "passed": true
+    },
+    {
+      "case": "changed_occupancy",
+      "expected": "completed",
+      "actual": "completed",
+      "passed": true
+    },
+    {
+      "case": "step_limit",
+      "expected": "step_limit",
+      "actual": "step_limit",
+      "passed": true
+    }
+  ],
+  "tests_run": 38,
+  "tests_passed": true,
+  "all_cases_passed": true
+}

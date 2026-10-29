@@ -1,0 +1,68 @@
+[
+  {
+    "step": 1,
+    "tool": "read_asset",
+    "arguments": {
+      "asset_id": "M02"
+    },
+    "reason": "Read requested asset before review.",
+    "observation": {
+      "ok": true,
+      "asset": {
+        "title": "未完成素材",
+        "description": "合成素材，版权资料待补",
+        "owner": "demo-content-team"
+      },
+      "missing": [
+        "rights"
+      ]
+    },
+    "next_action": "lookup_metadata"
+  },
+  {
+    "step": 2,
+    "tool": "lookup_metadata",
+    "arguments": {
+      "asset_id": "M02"
+    },
+    "reason": "Missing metadata; check supplementary source.",
+    "observation": {
+      "ok": true,
+      "asset": {
+        "title": "未完成素材",
+        "description": "合成素材，版权资料待补",
+        "owner": "demo-content-team"
+      },
+      "missing": [
+        "rights"
+      ],
+      "found": false
+    },
+    "next_action": "check_rules"
+  },
+  {
+    "step": 3,
+    "tool": "check_rules",
+    "arguments": {},
+    "reason": "Check completeness, rights, and content policy.",
+    "observation": {
+      "ok": true,
+      "status": "incomplete",
+      "reasons": [
+        "missing: rights"
+      ]
+    },
+    "next_action": "finish"
+  },
+  {
+    "step": 4,
+    "tool": "finish",
+    "arguments": {},
+    "reason": "Review did not pass; stop scheduling and expose required action.",
+    "observation": {
+      "ok": true,
+      "loop_finished": true
+    },
+    "next_action": "end:completed"
+  }
+]

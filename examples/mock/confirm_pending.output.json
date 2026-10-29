@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "mode": "mock",
+  "model": "deterministic-offline-policy",
+  "started_or_finished_at": "2026-10-29T17:04:35.467995+00:00",
+  "max_steps": 10,
+  "steps_used": 6,
+  "input": {
+    "request_id": "example-conflict",
+    "asset_id": "M01",
+    "requested_slot": "2026-11-01T18:00+08:00",
+    "hard_requirement": true,
+    "confirmed_slot": "2026-11-01T19:00+08:00"
+  },
+  "result": {
+    "request_id": "example-conflict",
+    "asset_id": "M01",
+    "status": "completed",
+    "review_status": "passed",
+    "risk_reasons": [],
+    "requested_slot": "2026-11-01T18:00+08:00",
+    "suggested_slot": "2026-11-01T19:00+08:00",
+    "pending_items": [],
+    "save": {
+      "ok": true,
+      "save_status": "updated",
+      "draft_id": "draft-e977fbee3703096e",
+      "asset_id": "M01",
+      "requested_slot": "2026-11-01T18:00+08:00",
+      "suggested_slot": "2026-11-01T19:00+08:00",
+      "confirmation_status": "confirmed",
+      "published": false
+    },
+    "published": false,
+    "decision_summary": "Draft persisted; no publishing performed."
+  },
+  "trace": [
+    {
+      "step": 1,
+      "tool": "read_asset",
+      "arguments": {
+        "asset_id": "M01"
+      },
+      "reason": "Read requested asset before review.",
+      "observation": {
+        "ok": true,
+        "asset": {
+          "title": "秋日剪辑教程",
+          "description": "合成素材：用小影制作秋日短片",
+          "rights": "cleared",
+          "owner": "demo-content-team"
+        },
+        "missing": []
+      },
+      "next_action": "check_rules"
+    },
+    {
+      "step": 2,
+      "tool": "check_rules",
+      "arguments": {},
+      "reason": "Check completeness, rights, and content policy.",
+      "observation": {
+        "ok": true,
+        "status": "passed",
+        "reasons": []
+      },
+      "next_action": "query_slots"
+    },
+    {
+      "step": 3,
+      "tool": "query_slots",
+      "arguments": {
+        "slot": "2026-11-01T18:00+08:00"
+      },
+      "reason": "Review passed; check requested time.",
+      "observation": {
+        "ok": true,
+        "slots": [
+          {
+            "slot": "2026-11-01T18:00+08:00",
+            "available": false
+          }
+        ]
+      },
+      "next_action": "query_slots"
+    },
+    {
+      "step": 4,
+      "tool": "query_slots",
+      "arguments": {
+        "slot": "2026-11-01T19:00+08:00"
+      },
+      "reason": "Check explicitly confirmed alternative.",
+      "observation": {
+        "ok": true,
+        "slots": [
+          {
+            "slot": "2026-11-01T19:00+08:00",
+            "available": true
+          }
+        ]
+      },
+      "next_action": "save_draft"
+    },
+    {
+      "step": 5,
+      "tool": "save_draft",
+      "arguments": {
+        "slot": "2026-11-01T19:00+08:00"
+      },
+      "reason": "Save observed free time; tool enforces confirmation status.",
+      "observation": {
+        "ok": true,
+        "save_status": "updated",
+        "draft_id": "draft-e977fbee3703096e",
+        "asset_id": "M01",
+        "requested_slot": "2026-11-01T18:00+08:00",
+        "suggested_slot": "2026-11-01T19:00+08:00",
+        "confirmation_status": "confirmed",
+        "published": false
+      },
+      "next_action": "finish"
+    },
+    {
+      "step": 6,
+      "tool": "finish",
+      "arguments": {},
+      "reason": "Report actual draft save result; no publishing action exists.",
+      "observation": {
+        "ok": true,
+        "loop_finished": true
+      },
+      "next_action": "end:completed"
+    }
+  ]
+}

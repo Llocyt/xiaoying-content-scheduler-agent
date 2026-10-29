@@ -1,0 +1,81 @@
+[
+  {
+    "step": 1,
+    "tool": "read_asset",
+    "arguments": {
+      "asset_id": "M01"
+    },
+    "reason": "Read requested asset before review.",
+    "observation": {
+      "ok": true,
+      "asset": {
+        "title": "秋日剪辑教程",
+        "description": "合成素材：用小影制作秋日短片",
+        "rights": "cleared",
+        "owner": "demo-content-team"
+      },
+      "missing": []
+    },
+    "next_action": "check_rules"
+  },
+  {
+    "step": 2,
+    "tool": "check_rules",
+    "arguments": {},
+    "reason": "Check completeness, rights, and content policy.",
+    "observation": {
+      "ok": true,
+      "status": "passed",
+      "reasons": []
+    },
+    "next_action": "query_slots"
+  },
+  {
+    "step": 3,
+    "tool": "query_slots",
+    "arguments": {
+      "slot": "2026-11-01T19:00+08:00"
+    },
+    "reason": "Review passed; check requested time.",
+    "observation": {
+      "ok": true,
+      "slots": [
+        {
+          "slot": "2026-11-01T19:00+08:00",
+          "available": true
+        }
+      ]
+    },
+    "next_action": "save_draft"
+  },
+  {
+    "step": 4,
+    "tool": "save_draft",
+    "arguments": {
+      "slot": "2026-11-01T19:00+08:00"
+    },
+    "reason": "Save observed free time; tool enforces confirmation status.",
+    "observation": {
+      "ok": true,
+      "save_status": "existing",
+      "draft_id": "draft-05267b279a87ae47",
+      "asset_id": "M01",
+      "requested_slot": "2026-11-01T19:00+08:00",
+      "suggested_slot": "2026-11-01T19:00+08:00",
+      "confirmation_status": "confirmed",
+      "published": false
+    },
+    "next_action": "finish"
+  },
+  {
+    "step": 5,
+    "tool": "finish",
+    "arguments": {},
+    "reason": "Report actual draft save result; no publishing action exists.",
+    "observation": {
+      "ok": true,
+      "loop_finished": true
+    },
+    "next_action": "end:completed"
+  }
+]

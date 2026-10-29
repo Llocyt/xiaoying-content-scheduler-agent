@@ -1,0 +1,67 @@
+{
+  "timezone": "Asia/Shanghai",
+  "rules": {
+    "required_fields": [
+      "title",
+      "description",
+      "rights",
+      "owner"
+    ],
+    "blocked_terms": [
+      "guaranteed cure",
+      "百分百治愈"
+    ]
+  },
+  "assets": {
+    "M01": {
+      "title": "秋日剪辑教程",
+      "description": "合成素材：用小影制作秋日短片",
+      "rights": "cleared",
+      "owner": "demo-content-team"
+    },
+    "M02": {
+      "title": "未完成素材",
+      "description": "合成素材，版权资料待补",
+      "owner": "demo-content-team"
+    },
+    "M03": {
+      "title": "高风险文案",
+      "description": "百分百治愈",
+      "rights": "cleared",
+      "owner": "demo-content-team"
+    },
+    "M04": {
+      "title": "可补全素材",
+      "description": "补查版权授权",
+      "owner": "demo-content-team"
+    },
+    "M05": {
+      "title": "人工复核素材",
+      "description": "需人工判断的合成示例",
+      "rights": "cleared",
+      "owner": "demo-content-team",
+      "needs_human_review": true
+    },
+    "M06": {
+      "title": "未授权素材",
+      "description": "授权未通过",
+      "rights": "denied",
+      "owner": "demo-content-team"
+    }
+  },
+  "metadata": {
+    "M04": {
+      "rights": "cleared"
+    }
+  },
+  "slots": [
+    "2026-11-01T17:00+08:00",
+    "2026-11-01T18:00+08:00",
+    "2026-11-01T19:00+08:00"
+  ],
+  "occupied": [
+    "2026-11-01T17:00+08:00",
+    "2026-11-01T18:00+08:00",
+    "2026-11-01T19:00+08:00"
+  ]
+}

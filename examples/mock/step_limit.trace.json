@@ -1,0 +1,21 @@
+[
+  {
+    "step": 1,
+    "tool": "read_asset",
+    "arguments": {
+      "asset_id": "M01"
+    },
+    "reason": "Read requested asset before review.",
+    "observation": {
+      "ok": true,
+      "asset": {
+        "title": "秋日剪辑教程",
+        "description": "合成素材：用小影制作秋日短片",
+        "rights": "cleared",
+        "owner": "demo-content-team"
+      },
+      "missing": []
+    },
+    "next_action": "end:step_limit"
+  }
+]

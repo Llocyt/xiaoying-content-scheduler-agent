@@ -1,0 +1,19 @@
+{
+  "draft_count": 1,
+  "drafts": [
+    {
+      "draft_id": "draft-05267b279a87ae47",
+      "asset_id": "M01",
+      "requested_slot": "2026-11-01T19:00+08:00",
+      "suggested_slot": "2026-11-01T19:00+08:00",
+      "confirmation_status": "confirmed",
+      "published": false
+    }
+  ],
+  "reservations": [
+    {
+      "slot": "2026-11-01T19:00+08:00",
+      "request_id": "example-normal"
+    }
+  ]
+}

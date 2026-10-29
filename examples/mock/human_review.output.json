@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "mode": "mock",
+  "model": "deterministic-offline-policy",
+  "started_or_finished_at": "2026-10-29T17:04:35.534741+00:00",
+  "max_steps": 10,
+  "steps_used": 3,
+  "input": {
+    "request_id": "example-human_review",
+    "asset_id": "M05",
+    "requested_slot": "2026-11-01T19:00+08:00",
+    "hard_requirement": true
+  },
+  "result": {
+    "request_id": "example-human_review",
+    "asset_id": "M05",
+    "status": "review_required",
+    "review_status": "review_required",
+    "risk_reasons": [
+      "human_review_required"
+    ],
+    "requested_slot": "2026-11-01T19:00+08:00",
+    "suggested_slot": null,
+    "pending_items": [
+      "human content review"
+    ],
+    "save": {
+      "save_status": "not_attempted"
+    },
+    "published": false,
+    "decision_summary": "Human content review required; no draft saved."
+  },
+  "trace": [
+    {
+      "step": 1,
+      "tool": "read_asset",
+      "arguments": {
+        "asset_id": "M05"
+      },
+      "reason": "Read requested asset before review.",
+      "observation": {
+        "ok": true,
+        "asset": {
+          "title": "人工复核素材",
+          "description": "需人工判断的合成示例",
+          "rights": "cleared",
+          "owner": "demo-content-team",
+          "needs_human_review": true
+        },
+        "missing": []
+      },
+      "next_action": "check_rules"
+    },
+    {
+      "step": 2,
+      "tool": "check_rules",
+      "arguments": {},
+      "reason": "Check completeness, rights, and content policy.",
+      "observation": {
+        "ok": true,
+        "status": "review_required",
+        "reasons": [
+          "human_review_required"
+        ]
+      },
+      "next_action": "finish"
+    },
+    {
+      "step": 3,
+      "tool": "finish",
+      "arguments": {},
+      "reason": "Review did not pass; stop scheduling and expose required action.",
+      "observation": {
+        "ok": true,
+        "loop_finished": true
+      },
+      "next_action": "end:completed"
+    }
+  ]
+}

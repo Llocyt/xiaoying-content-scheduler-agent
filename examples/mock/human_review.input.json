@@ -1,0 +1,6 @@
+{
+  "request_id": "example-human_review",
+  "asset_id": "M05",
+  "requested_slot": "2026-11-01T19:00+08:00",
+  "hard_requirement": true
+}
