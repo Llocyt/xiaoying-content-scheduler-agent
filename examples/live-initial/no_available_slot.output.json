@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "mode": "live",
+  "model": "deepseek-flash",
+  "started_or_finished_at": "2026-10-29T17:18:00.705212+00:00",
+  "max_steps": 10,
+  "steps_used": 5,
+  "input": {
+    "request_id": "example-no_available_slot",
+    "asset_id": "M01",
+    "requested_slot": "2026-11-01T18:00+08:00",
+    "hard_requirement": true
+  },
+  "result": {
+    "request_id": "example-no_available_slot",
+    "asset_id": "M01",
+    "status": "model_error",
+    "review_status": "passed",
+    "risk_reasons": [],
+    "requested_slot": "2026-11-01T18:00+08:00",
+    "suggested_slot": null,
+    "pending_items": [],
+    "save": {
+      "save_status": "not_attempted"
+    },
+    "published": false,
+    "decision_summary": "Model unavailable or returned an invalid action; inspect trace error."
+  },
+  "trace": [
+    {
+      "step": 1,
+      "tool": "read_asset",
+      "arguments": {
+        "asset_id": "M01"
+      },
+      "reason": "Start by reviewing the requested asset's content and any embedded scheduling metadata.",
+      "observation": {
+        "ok": true,
+        "asset": {
+          "title": "秋日剪辑教程",
+          "description": "合成素材：用小影制作秋日短片",
+          "rights": "cleared",
+          "owner": "demo-content-team"
+        },
+        "missing": []
+      },
+      "next_action": "check_rules"
+    },
+    {
+      "step": 2,
+      "tool": "check_rules",
+      "arguments": {},
+      "reason": "Asset content and metadata were read successfully with no missing fields; check compliance rules before scheduling.",
+      "observation": {
+        "ok": true,
+        "status": "passed",
+        "reasons": []
+      },
+      "next_action": "query_slots"
+    },
+    {
+      "step": 3,
+      "tool": "query_slots",
+      "arguments": {
+        "slot": "2026-11-01T18:00+08:00",
+        "alternatives": false
+      },
+      "reason": "Asset content is readable, metadata is complete, and rules passed; next verify availability for the hard requested slot.",
+      "observation": {
+        "ok": true,
+        "slots": [
+          {
+            "slot": "2026-11-01T18:00+08:00",
+            "available": false
+          }
+        ]
+      },
+      "next_action": "query_slots"
+    },
+    {
+      "step": 4,
+      "tool": "query_slots",
+      "arguments": {
+        "slot": "2026-11-01T18:00+08:00",
+        "alternatives": true
+      },
+      "reason": "Hard requested slot is unavailable, so check for same-day alternatives before deciding.",
+      "observation": {
+        "ok": true,
+        "slots": [
+          {
+            "slot": "2026-11-01T18:00+08:00",
+            "available": false
+          },
+          {
+            "slot": "2026-11-01T17:00+08:00",
+            "available": false
+          },
+          {
+            "slot": "2026-11-01T19:00+08:00",
+            "available": false
+          }
+        ]
+      },
+      "next_action": "execution_error"
+    },
+    {
+      "step": 5,
+      "error": "Invalid model action schema.",
+      "next_action": "end:model_error"
+    }
+  ]
+}

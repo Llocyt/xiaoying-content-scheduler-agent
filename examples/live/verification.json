@@ -1,0 +1,101 @@
+{
+  "generated_at": "2026-10-29T17:20:54.464786+00:00",
+  "mode": "live",
+  "source_sha256": {
+    "src/scheduler/__init__.py": "15fe9e0586da6919c6f12b1cc2d7be5ba456f811ed0bceaaad6391c26ae30d9e",
+    "src/scheduler/__main__.py": "bf45135f435463c561d1e2f5293e47f60a9c9adeb54a25cebfc8841416416759",
+    "src/scheduler/agent.py": "9190b55190f55976aa87ea37447a8b1f6b50017ec8ee95458198a9ed2fa2d8a4",
+    "src/scheduler/config.py": "6cd63623f6b0712ae9f346d3f79a90b81322106ede24aa0b4b762bed786da1f7",
+    "src/scheduler/domain.py": "8fc8fac64b13f193692479f946886b6401ce869779a198e1bf898ccfcebad316",
+    "src/scheduler/model.py": "f5ae1b356962219cdca438c72e44d669bddb73f6d367387d6131450fb4f910d2",
+    "src/scheduler/tools.py": "4963d840c616e31ee6097adbd8901a596da5b70fb1e42714bfb81b75c23f25a5",
+    "scripts/verify.py": "4d51518450a96ed713336aa41ea7febf158e5845e4da663129d438156b127c27",
+    "tests/test_cli.py": "be49d42598bba40f6256b3b110ddab6718ebdd2745271dc6cc7bba981d604f4f",
+    "tests/test_config.py": "131f2daba83c02eab1a11ebc32081e133f294e744fa6a8eb78db36a3b171f711",
+    "tests/test_scheduler.py": "a6bd942c7760d3ce8d5fc9efdfd505c75952c581cfed872a921f4694ae3b6c2c"
+  },
+  "real_model_verified": true,
+  "cases": [
+    {
+      "case": "normal",
+      "expected": "completed",
+      "actual": "completed",
+      "passed": true
+    },
+    {
+      "case": "duplicate",
+      "expected": "existing",
+      "actual": "existing",
+      "passed": true
+    },
+    {
+      "case": "missing",
+      "expected": "incomplete",
+      "actual": "incomplete",
+      "passed": true
+    },
+    {
+      "case": "risk",
+      "expected": "blocked",
+      "actual": "blocked",
+      "passed": true
+    },
+    {
+      "case": "conflict",
+      "expected": "pending_confirmation",
+      "actual": "pending_confirmation",
+      "passed": true
+    },
+    {
+      "case": "confirm_pending",
+      "expected": "updated",
+      "actual": "updated",
+      "passed": true
+    },
+    {
+      "case": "save_failure",
+      "expected": "save_failed",
+      "actual": "save_failed",
+      "passed": true
+    },
+    {
+      "case": "metadata_recovery",
+      "expected": "completed",
+      "actual": "completed",
+      "passed": true
+    },
+    {
+      "case": "human_review",
+      "expected": "review_required",
+      "actual": "review_required",
+      "passed": true
+    },
+    {
+      "case": "confirmed_alternative",
+      "expected": "completed",
+      "actual": "completed",
+      "passed": true
+    },
+    {
+      "case": "no_available_slot",
+      "expected": "incomplete",
+      "actual": "incomplete",
+      "passed": true
+    },
+    {
+      "case": "changed_occupancy",
+      "expected": "completed",
+      "actual": "completed",
+      "passed": true
+    },
+    {
+      "case": "step_limit",
+      "expected": "step_limit",
+      "actual": "step_limit",
+      "passed": true
+    }
+  ],
+  "tests_run": 49,
+  "tests_passed": true,
+  "all_cases_passed": true
+}

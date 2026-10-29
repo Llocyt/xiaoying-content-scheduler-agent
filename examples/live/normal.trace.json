@@ -1,0 +1,82 @@
+[
+  {
+    "step": 1,
+    "tool": "read_asset",
+    "arguments": {
+      "asset_id": "M01"
+    },
+    "reason": "Start by reading the requested asset before checking metadata, rules, and scheduling.",
+    "observation": {
+      "ok": true,
+      "asset": {
+        "title": "秋日剪辑教程",
+        "description": "合成素材：用小影制作秋日短片",
+        "rights": "cleared",
+        "owner": "demo-content-team"
+      },
+      "missing": []
+    },
+    "next_action": "check_rules"
+  },
+  {
+    "step": 2,
+    "tool": "check_rules",
+    "arguments": {},
+    "reason": "Asset read succeeded with no missing metadata; check scheduling and publishing rules before any draft or finish action.",
+    "observation": {
+      "ok": true,
+      "status": "passed",
+      "reasons": []
+    },
+    "next_action": "query_slots"
+  },
+  {
+    "step": 3,
+    "tool": "query_slots",
+    "arguments": {
+      "slot": "2026-11-01T19:00+08:00",
+      "alternatives": false
+    },
+    "reason": "Asset read and rules check passed with no missing metadata; now verify availability for the hard requested slot before saving a draft.",
+    "observation": {
+      "ok": true,
+      "slots": [
+        {
+          "slot": "2026-11-01T19:00+08:00",
+          "available": true
+        }
+      ]
+    },
+    "next_action": "save_draft"
+  },
+  {
+    "step": 4,
+    "tool": "save_draft",
+    "arguments": {
+      "slot": "2026-11-01T19:00+08:00"
+    },
+    "reason": "Asset read, rules check, and slot availability all succeeded for the hard requested time; save the pending draft and observe the result.",
+    "observation": {
+      "ok": true,
+      "save_status": "saved",
+      "draft_id": "draft-05267b279a87ae47",
+      "asset_id": "M01",
+      "requested_slot": "2026-11-01T19:00+08:00",
+      "suggested_slot": "2026-11-01T19:00+08:00",
+      "confirmation_status": "confirmed",
+      "published": false
+    },
+    "next_action": "finish"
+  },
+  {
+    "step": 5,
+    "tool": "finish",
+    "arguments": {},
+    "reason": "Asset read, rules check, and slot query all passed; draft saved successfully for the confirmed requested slot. No publishing performed.",
+    "observation": {
+      "ok": true,
+      "loop_finished": true
+    },
+    "next_action": "end:completed"
+  }
+]

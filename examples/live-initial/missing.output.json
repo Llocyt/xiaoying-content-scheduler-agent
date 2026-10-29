@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "mode": "live",
+  "model": "deepseek-flash",
+  "started_or_finished_at": "2026-10-29T17:16:39.914755+00:00",
+  "max_steps": 10,
+  "steps_used": 4,
+  "input": {
+    "request_id": "example-missing",
+    "asset_id": "M02",
+    "requested_slot": "2026-11-01T19:00+08:00",
+    "hard_requirement": true
+  },
+  "result": {
+    "request_id": "example-missing",
+    "asset_id": "M02",
+    "status": "model_error",
+    "review_status": "incomplete",
+    "risk_reasons": [
+      "missing: rights"
+    ],
+    "requested_slot": "2026-11-01T19:00+08:00",
+    "suggested_slot": null,
+    "pending_items": [
+      "missing: rights"
+    ],
+    "save": {
+      "save_status": "not_attempted"
+    },
+    "published": false,
+    "decision_summary": "Model unavailable or returned an invalid action; inspect trace error."
+  },
+  "trace": [
+    {
+      "step": 1,
+      "tool": "read_asset",
+      "arguments": {
+        "asset_id": "M02"
+      },
+      "reason": "Start by reading the requested asset to assess it before checking metadata and scheduling rules.",
+      "observation": {
+        "ok": true,
+        "asset": {
+          "title": "未完成素材",
+          "description": "合成素材，版权资料待补",
+          "owner": "demo-content-team"
+        },
+        "missing": [
+          "rights"
+        ]
+      },
+      "next_action": "lookup_metadata"
+    },
+    {
+      "step": 2,
+      "tool": "lookup_metadata",
+      "arguments": {
+        "asset_id": "M02"
+      },
+      "reason": "The asset read succeeded but metadata reports missing rights information; look up metadata before applying scheduling rules.",
+      "observation": {
+        "ok": true,
+        "asset": {
+          "title": "未完成素材",
+          "description": "合成素材，版权资料待补",
+          "owner": "demo-content-team"
+        },
+        "missing": [
+          "rights"
+        ],
+        "found": false
+      },
+      "next_action": "check_rules"
+    },
+    {
+      "step": 3,
+      "tool": "check_rules",
+      "arguments": {},
+      "reason": "Metadata lookup confirmed the asset lacks required rights information; check scheduling rules before deciding whether to block or proceed.",
+      "observation": {
+        "ok": true,
+        "status": "incomplete",
+        "reasons": [
+          "missing: rights"
+        ]
+      },
+      "next_action": "execution_error"
+    },
+    {
+      "step": 4,
+      "error": "Invalid model action schema.",
+      "next_action": "end:model_error"
+    }
+  ]
+}

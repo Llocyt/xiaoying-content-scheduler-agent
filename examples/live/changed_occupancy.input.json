@@ -1,0 +1,6 @@
+{
+  "request_id": "example-changed_occupancy",
+  "asset_id": "M01",
+  "requested_slot": "2026-11-01T18:00+08:00",
+  "hard_requirement": true
+}

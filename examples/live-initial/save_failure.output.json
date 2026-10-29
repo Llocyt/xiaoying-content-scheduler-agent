@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "mode": "live",
+  "model": "deepseek-flash",
+  "started_or_finished_at": "2026-10-29T17:17:18.671839+00:00",
+  "max_steps": 10,
+  "steps_used": 5,
+  "input": {
+    "request_id": "example-save_failure",
+    "asset_id": "M01",
+    "requested_slot": "2026-11-01T19:00+08:00",
+    "hard_requirement": true
+  },
+  "result": {
+    "request_id": "example-save_failure",
+    "asset_id": "M01",
+    "status": "model_error",
+    "review_status": "passed",
+    "risk_reasons": [],
+    "requested_slot": "2026-11-01T19:00+08:00",
+    "suggested_slot": "2026-11-01T19:00+08:00",
+    "pending_items": [],
+    "save": {
+      "ok": false,
+      "save_status": "failed",
+      "error": "simulated_storage_failure"
+    },
+    "published": false,
+    "decision_summary": "Model unavailable or returned an invalid action; inspect trace error."
+  },
+  "trace": [
+    {
+      "step": 1,
+      "tool": "read_asset",
+      "arguments": {
+        "asset_id": "M01"
+      },
+      "reason": "Read the requested asset before checking metadata, rules, and scheduling availability.",
+      "observation": {
+        "ok": true,
+        "asset": {
+          "title": "秋日剪辑教程",
+          "description": "合成素材：用小影制作秋日短片",
+          "rights": "cleared",
+          "owner": "demo-content-team"
+        },
+        "missing": []
+      },
+      "next_action": "check_rules"
+    },
+    {
+      "step": 2,
+      "tool": "check_rules",
+      "arguments": {},
+      "reason": "Asset metadata is present and rights are cleared; check scheduling and publishing rules before querying availability.",
+      "observation": {
+        "ok": true,
+        "status": "passed",
+        "reasons": []
+      },
+      "next_action": "query_slots"
+    },
+    {
+      "step": 3,
+      "tool": "query_slots",
+      "arguments": {
+        "slot": "2026-11-01T19:00+08:00",
+        "alternatives": false
+      },
+      "reason": "Asset metadata is complete and rules passed; now check availability for the hard requested slot.",
+      "observation": {
+        "ok": true,
+        "slots": [
+          {
+            "slot": "2026-11-01T19:00+08:00",
+            "available": true
+          }
+        ]
+      },
+      "next_action": "save_draft"
+    },
+    {
+      "step": 4,
+      "tool": "save_draft",
+      "arguments": {
+        "slot": "2026-11-01T19:00+08:00"
+      },
+      "reason": "Requested hard slot is available and rules passed; save the draft at the requested time.",
+      "observation": {
+        "ok": false,
+        "save_status": "failed",
+        "error": "simulated_storage_failure"
+      },
+      "next_action": "execution_error"
+    },
+    {
+      "step": 5,
+      "error": "Invalid model action schema.",
+      "next_action": "end:model_error"
+    }
+  ]
+}

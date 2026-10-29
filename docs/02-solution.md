@@ -6,9 +6,13 @@
 
 `src/scheduler/agent.py` 只负责循环和动作格式校验，不通过固定分支替真实模型决定业务动作。模型收到原始请求与此前全部工具观察，每次选择下一项动作。程序执行工具后把实际观察送入下一轮；模型可结束，最终报告由工具层重建。
 
-`OpenAICompatibleModel` 请求兼容 Chat Completions 服务。采用 JSON 动作协议而非厂商 function calling，减少 SDK 依赖；目标服务必须支持 JSON object 输出。动作严格含 `tool`、`arguments`、`reason`。服务返回格式错误、HTTP 错误或超时会产生明确 `model_error`，不伪装 Mock 成功。完整真实服务兼容性尚待验证。
+`OpenAICompatibleModel` 请求兼容 Chat Completions 服务。采用 JSON 动作协议而非厂商 function calling，减少 SDK 依赖；目标服务必须支持 JSON object 输出。动作严格含 `tool`、`arguments`、`reason`。服务返回格式错误、HTTP 错误或超时会产生明确 `model_error`，不伪装 Mock 成功。实际服务结果见评估文档。
+
+真实模式读取本地 `.env` 或指定 `--env-file`，进程变量优先。URL 通过标准解析器检查，拒绝嵌入用户名、密码、查询参数及无效端口；网关 origin 自动补 `/v1`。HTTPS 为默认，仅在用户设置 `MODEL_ALLOW_HTTP=1` 时允许远程 HTTP。仍禁止跟随重定向，以免将认证信息送往另一个地址。密钥只用于 Authorization 请求头，不加入模型上下文或 Trace。
 
 `MockModel` 是固定规则的离线替身，独立标记 `mode=mock`。它会根据观察生成不同动作，但不算真实模型 ReAct 验证。真实模式不会调用该替身。
+
+真实模型首轮评估发现结束动作格式不稳定，因此运行时对非法动作返回 `invalid_action_schema` 观察，最多给一次纠正机会，让模型自己选择下一步，不代写业务决定；该轮同样计入执行上限。第二次非法动作明确返回 `model_error`。模型在成功读取素材但未检查规则时试图结束，会收到 `review_observation_required`，确保最终审核状态有工具依据。
 
 ## 工具及事实来源
 

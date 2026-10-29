@@ -2,7 +2,7 @@
   "schema_version": 1,
   "mode": "mock",
   "model": "deterministic-offline-policy",
-  "started_or_finished_at": "2026-10-29T17:04:35.467995+00:00",
+  "started_or_finished_at": "2026-10-29T17:19:04.681775+00:00",
   "max_steps": 10,
   "steps_used": 6,
   "input": {

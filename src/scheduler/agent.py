@@ -7,6 +7,7 @@ def run_agent(request, model, tools, max_steps=10):
     if type(max_steps) is not int or not 1 <= max_steps <= 30:
         raise ValueError('max_steps must be between 1 and 30')
     trace = []
+    schema_repairs = 0
     state, reason = 'step_limit', 'Execution limit reached; work is incomplete.'
     for step in range(1, max_steps + 1):
         try:
@@ -18,11 +19,23 @@ def run_agent(request, model, tools, max_steps=10):
         if (not isinstance(decision, dict) or set(decision) != {'tool', 'arguments', 'reason'}
                 or not isinstance(decision['tool'], str) or not isinstance(decision['arguments'], dict)
                 or not isinstance(decision['reason'], str) or len(decision['reason']) > 1000):
-            state, reason = 'model_error', 'Invalid model action schema.'
-            trace.append({'step': step, 'error': reason})
-            break
+            observation = {'ok': False, 'error': 'invalid_action_schema',
+                           'expected': 'Exactly tool:string, arguments:object, reason:string (max 1000 chars). finish uses arguments:{}.'}
+            trace.append({'step': step, 'tool': 'invalid_action', 'arguments': {},
+                          'reason': 'Runtime rejected malformed action; no business tool executed.',
+                          'observation': observation})
+            if schema_repairs >= 1:
+                state, reason = 'model_error', 'Model action schema remained invalid after one repair opportunity.'
+                break
+            schema_repairs += 1
+            continue
         name, args = decision['tool'], decision['arguments']
         if name == 'finish':
+            if tools.asset is not None and tools.review is None:
+                trace.append({'step': step, **decision, 'observation': {
+                    'ok': False, 'error': 'review_observation_required',
+                    'detail': 'Read succeeded but no rule-check observation exists; choose next action using check_rules.'}})
+                continue
             trace.append({'step': step, **decision, 'observation': {'ok': True, 'loop_finished': True}})
             state, reason = 'completed', decision['reason']
             break

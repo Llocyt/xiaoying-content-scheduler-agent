@@ -1,0 +1,46 @@
+[
+  {
+    "step": 1,
+    "tool": "read_asset",
+    "arguments": {
+      "asset_id": "M03"
+    },
+    "reason": "Need to review the requested asset before checking rules and scheduling availability.",
+    "observation": {
+      "ok": true,
+      "asset": {
+        "title": "高风险文案",
+        "description": "百分百治愈",
+        "rights": "cleared",
+        "owner": "demo-content-team"
+      },
+      "missing": []
+    },
+    "next_action": "check_rules"
+  },
+  {
+    "step": 2,
+    "tool": "check_rules",
+    "arguments": {},
+    "reason": "Asset read succeeded with no missing metadata; rules must be checked before any scheduling or finish.",
+    "observation": {
+      "ok": true,
+      "status": "blocked",
+      "reasons": [
+        "prohibited_claim"
+      ]
+    },
+    "next_action": "finish"
+  },
+  {
+    "step": 3,
+    "tool": "finish",
+    "arguments": {},
+    "reason": "Asset M03 is blocked by rule check (prohibited_claim: '百分百治愈'), so no slot was queried and no draft was saved. Human review/rewrite of the copy is required.",
+    "observation": {
+      "ok": true,
+      "loop_finished": true
+    },
+    "next_action": "end:completed"
+  }
+]

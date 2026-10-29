@@ -2,6 +2,14 @@ test_output_failure_retains_business_result (test_cli.CliTests.test_output_failu
 test_output_must_not_overwrite_input (test_cli.CliTests.test_output_must_not_overwrite_input) ... ok
 test_process_replay_reuses_draft (test_cli.CliTests.test_process_replay_reuses_draft) ... ok
 test_save_failure_exit_status (test_cli.CliTests.test_save_failure_exit_status) ... ok
+test_environment_takes_precedence (test_config.ConfigTests.test_environment_takes_precedence) ... ok
+test_exact_loopback_does_not_allow_similar_remote_hostname (test_config.ConfigTests.test_exact_loopback_does_not_allow_similar_remote_hostname) ... ok
+test_explicit_api_path_preserved (test_config.ConfigTests.test_explicit_api_path_preserved) ... ok
+test_invalid_file_does_not_leak_secret_or_partially_apply (test_config.ConfigTests.test_invalid_file_does_not_leak_secret_or_partially_apply) ... ok
+test_invalid_urls_rejected_even_when_http_allowed (test_config.ConfigTests.test_invalid_urls_rejected_even_when_http_allowed) ... ok
+test_local_configuration_loads_without_executing (test_config.ConfigTests.test_local_configuration_loads_without_executing) ... ok
+test_missing_explicit_file_is_error (test_config.ConfigTests.test_missing_explicit_file_is_error) ... ok
+test_remote_http_requires_opt_in (test_config.ConfigTests.test_remote_http_requires_opt_in) ... ok
 test_blocked_asset_cannot_bypass_review (test_scheduler.SchedulerTests.test_blocked_asset_cannot_bypass_review) ... ok
 test_changed_occupancy_rechecked_on_save (test_scheduler.SchedulerTests.test_changed_occupancy_rechecked_on_save) ... ok
 test_concurrent_duplicate_is_atomic (test_scheduler.SchedulerTests.test_concurrent_duplicate_is_atomic) ... ok
@@ -22,6 +30,8 @@ test_live_missing_config_no_fallback (test_scheduler.SchedulerTests.test_live_mi
 test_malformed_model_action (test_scheduler.SchedulerTests.test_malformed_model_action) ... ok
 test_metadata_recovery (test_scheduler.SchedulerTests.test_metadata_recovery) ... ok
 test_missing_information (test_scheduler.SchedulerTests.test_missing_information) ... ok
+test_model_corrects_format_after_runtime_observation (test_scheduler.SchedulerTests.test_model_corrects_format_after_runtime_observation) ... ok
+test_model_must_observe_rules_before_finishing (test_scheduler.SchedulerTests.test_model_must_observe_rules_before_finishing) ... ok
 test_no_available_slot (test_scheduler.SchedulerTests.test_no_available_slot) ... ok
 test_normal_schedule (test_scheduler.SchedulerTests.test_normal_schedule) ... ok
 test_returned_receipt_cannot_modify_ledger (test_scheduler.SchedulerTests.test_returned_receipt_cannot_modify_ledger) ... ok
@@ -31,6 +41,7 @@ test_rules_changed_before_save (test_scheduler.SchedulerTests.test_rules_changed
 test_save_before_review_denied (test_scheduler.SchedulerTests.test_save_before_review_denied) ... ok
 test_save_failure (test_scheduler.SchedulerTests.test_save_failure) ... ok
 test_save_without_query_denied (test_scheduler.SchedulerTests.test_save_without_query_denied) ... ok
+test_schema_repair_is_inside_execution_limit (test_scheduler.SchedulerTests.test_schema_repair_is_inside_execution_limit) ... ok
 test_step_limit (test_scheduler.SchedulerTests.test_step_limit) ... ok
 test_two_requests_cannot_reserve_one_slot (test_scheduler.SchedulerTests.test_two_requests_cannot_reserve_one_slot) ... ok
 test_unknown_asset (test_scheduler.SchedulerTests.test_unknown_asset) ... ok
@@ -38,6 +49,6 @@ test_unknown_tool_denied (test_scheduler.SchedulerTests.test_unknown_tool_denied
 test_wrong_asset_denied (test_scheduler.SchedulerTests.test_wrong_asset_denied) ... ok
 
 ----------------------------------------------------------------------
-Ran 38 tests in 1.339s
+Ran 49 tests in 1.450s
 
 OK

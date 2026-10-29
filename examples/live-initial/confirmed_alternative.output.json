@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "mode": "live",
+  "model": "deepseek-flash",
+  "started_or_finished_at": "2026-10-29T17:17:52.503626+00:00",
+  "max_steps": 10,
+  "steps_used": 5,
+  "input": {
+    "request_id": "example-confirmed_alternative",
+    "asset_id": "M01",
+    "requested_slot": "2026-11-01T18:00+08:00",
+    "hard_requirement": true,
+    "confirmed_slot": "2026-11-01T19:00+08:00"
+  },
+  "result": {
+    "request_id": "example-confirmed_alternative",
+    "asset_id": "M01",
+    "status": "model_error",
+    "review_status": "passed",
+    "risk_reasons": [],
+    "requested_slot": "2026-11-01T18:00+08:00",
+    "suggested_slot": "2026-11-01T19:00+08:00",
+    "pending_items": [],
+    "save": {
+      "ok": true,
+      "save_status": "saved",
+      "draft_id": "draft-cfbbcbd44544fbef",
+      "asset_id": "M01",
+      "requested_slot": "2026-11-01T18:00+08:00",
+      "suggested_slot": "2026-11-01T19:00+08:00",
+      "confirmation_status": "confirmed",
+      "published": false
+    },
+    "published": false,
+    "decision_summary": "Model unavailable or returned an invalid action; inspect trace error."
+  },
+  "trace": [
+    {
+      "step": 1,
+      "tool": "read_asset",
+      "arguments": {
+        "asset_id": "M01"
+      },
+      "reason": "Inspect the requested asset before evaluating metadata, rules, and scheduling availability.",
+      "observation": {
+        "ok": true,
+        "asset": {
+          "title": "秋日剪辑教程",
+          "description": "合成素材：用小影制作秋日短片",
+          "rights": "cleared",
+          "owner": "demo-content-team"
+        },
+        "missing": []
+      },
+      "next_action": "check_rules"
+    },
+    {
+      "step": 2,
+      "tool": "check_rules",
+      "arguments": {},
+      "reason": "Asset metadata is present; next verify content and scheduling rules before checking slot availability.",
+      "observation": {
+        "ok": true,
+        "status": "passed",
+        "reasons": []
+      },
+      "next_action": "query_slots"
+    },
+    {
+      "step": 3,
+      "tool": "query_slots",
+      "arguments": {
+        "slot": "2026-11-01T18:00+08:00",
+        "alternatives": true
+      },
+      "reason": "Rules passed; check the hard requested 18:00 slot and same-day alternatives, including the explicitly confirmed 19:00 slot, before drafting.",
+      "observation": {
+        "ok": true,
+        "slots": [
+          {
+            "slot": "2026-11-01T18:00+08:00",
+            "available": false
+          },
+          {
+            "slot": "2026-11-01T17:00+08:00",
+            "available": false
+          },
+          {
+            "slot": "2026-11-01T19:00+08:00",
+            "available": true
+          }
+        ]
+      },
+      "next_action": "save_draft"
+    },
+    {
+      "step": 4,
+      "tool": "save_draft",
+      "arguments": {
+        "slot": "2026-11-01T19:00+08:00"
+      },
+      "reason": "The hard requested 18:00 slot is unavailable, but the explicitly confirmed 19:00 alternative is available; save it as a pending-confirmation draft.",
+      "observation": {
+        "ok": true,
+        "save_status": "saved",
+        "draft_id": "draft-cfbbcbd44544fbef",
+        "asset_id": "M01",
+        "requested_slot": "2026-11-01T18:00+08:00",
+        "suggested_slot": "2026-11-01T19:00+08:00",
+        "confirmation_status": "confirmed",
+        "published": false
+      },
+      "next_action": "execution_error"
+    },
+    {
+      "step": 5,
+      "error": "Invalid model action schema.",
+      "next_action": "end:model_error"
+    }
+  ]
+}

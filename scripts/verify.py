@@ -8,6 +8,7 @@ import unittest
 from datetime import datetime, timezone
 from pathlib import Path
 from scheduler.agent import run_agent
+from scheduler.config import load_env_file
 from scheduler.domain import validate_request
 from scheduler.model import MockModel, OpenAICompatibleModel
 from scheduler.tools import BusinessTools
@@ -18,11 +19,14 @@ ROOT = Path(__file__).resolve().parents[1]
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--mode', choices=['mock', 'live'], default='mock')
+    parser.add_argument('--env-file', type=Path, default=Path('.env'))
     parser.add_argument('--out', type=Path, help='Optional fresh evidence directory')
     args = parser.parse_args()
     output = args.out or ROOT / 'examples' / args.mode
     output.mkdir(parents=True, exist_ok=True)
     fixture = json.loads((ROOT / 'data/fixtures.json').read_text(encoding='utf-8'))
+    if args.mode == 'live':
+        load_env_file(args.env_file)
     model = MockModel() if args.mode == 'mock' else OpenAICompatibleModel()
     cases = [
         ('normal', 'M01', '19', {}, 'completed'),

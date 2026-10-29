@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "mode": "live",
+  "model": "deepseek-flash",
+  "started_or_finished_at": "2026-10-29T17:16:58.152362+00:00",
+  "max_steps": 10,
+  "steps_used": 6,
+  "input": {
+    "request_id": "example-conflict",
+    "asset_id": "M01",
+    "requested_slot": "2026-11-01T18:00+08:00",
+    "hard_requirement": true
+  },
+  "result": {
+    "request_id": "example-conflict",
+    "asset_id": "M01",
+    "status": "model_error",
+    "review_status": "passed",
+    "risk_reasons": [],
+    "requested_slot": "2026-11-01T18:00+08:00",
+    "suggested_slot": "2026-11-01T19:00+08:00",
+    "pending_items": [
+      "confirm alternative time 2026-11-01T19:00+08:00; resubmit SAME request_id with confirmed_slot"
+    ],
+    "save": {
+      "ok": true,
+      "save_status": "saved",
+      "draft_id": "draft-e977fbee3703096e",
+      "asset_id": "M01",
+      "requested_slot": "2026-11-01T18:00+08:00",
+      "suggested_slot": "2026-11-01T19:00+08:00",
+      "confirmation_status": "pending",
+      "published": false
+    },
+    "published": false,
+    "decision_summary": "Model unavailable or returned an invalid action; inspect trace error."
+  },
+  "trace": [
+    {
+      "step": 1,
+      "tool": "read_asset",
+      "arguments": {
+        "asset_id": "M01"
+      },
+      "reason": "Inspect the requested asset before checking metadata and scheduling rules.",
+      "observation": {
+        "ok": true,
+        "asset": {
+          "title": "秋日剪辑教程",
+          "description": "合成素材：用小影制作秋日短片",
+          "rights": "cleared",
+          "owner": "demo-content-team"
+        },
+        "missing": []
+      },
+      "next_action": "check_rules"
+    },
+    {
+      "step": 2,
+      "tool": "check_rules",
+      "arguments": {},
+      "reason": "Asset read succeeded with no missing metadata; check scheduling rules before querying availability.",
+      "observation": {
+        "ok": true,
+        "status": "passed",
+        "reasons": []
+      },
+      "next_action": "query_slots"
+    },
+    {
+      "step": 3,
+      "tool": "query_slots",
+      "arguments": {
+        "slot": "2026-11-01T18:00+08:00",
+        "alternatives": false
+      },
+      "reason": "Asset metadata and scheduling rules passed; now check availability for the hard requested slot.",
+      "observation": {
+        "ok": true,
+        "slots": [
+          {
+            "slot": "2026-11-01T18:00+08:00",
+            "available": false
+          }
+        ]
+      },
+      "next_action": "query_slots"
+    },
+    {
+      "step": 4,
+      "tool": "query_slots",
+      "arguments": {
+        "slot": "2026-11-01T18:00+08:00",
+        "alternatives": true
+      },
+      "reason": "The requested hard slot is unavailable, so I need to check same-day alternative slots before deciding whether a pending-confirmation draft is possible.",
+      "observation": {
+        "ok": true,
+        "slots": [
+          {
+            "slot": "2026-11-01T18:00+08:00",
+            "available": false
+          },
+          {
+            "slot": "2026-11-01T17:00+08:00",
+            "available": false
+          },
+          {
+            "slot": "2026-11-01T19:00+08:00",
+            "available": true
+          }
+        ]
+      },
+      "next_action": "save_draft"
+    },
+    {
+      "step": 5,
+      "tool": "save_draft",
+      "arguments": {
+        "slot": "2026-11-01T19:00+08:00"
+      },
+      "reason": "The hard requested 18:00 slot is unavailable; 19:00 is the listed same-day alternative, so save it as a pending-confirmation draft without treating it as confirmed.",
+      "observation": {
+        "ok": true,
+        "save_status": "saved",
+        "draft_id": "draft-e977fbee3703096e",
+        "asset_id": "M01",
+        "requested_slot": "2026-11-01T18:00+08:00",
+        "suggested_slot": "2026-11-01T19:00+08:00",
+        "confirmation_status": "pending",
+        "published": false
+      },
+      "next_action": "execution_error"
+    },
+    {
+      "step": 6,
+      "error": "Invalid model action schema.",
+      "next_action": "end:model_error"
+    }
+  ]
+}

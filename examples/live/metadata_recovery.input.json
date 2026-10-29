@@ -1,0 +1,6 @@
+{
+  "request_id": "example-metadata_recovery",
+  "asset_id": "M04",
+  "requested_slot": "2026-11-01T19:00+08:00",
+  "hard_requirement": true
+}

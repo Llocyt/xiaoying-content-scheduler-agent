@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "mode": "live",
+  "model": "deepseek-flash",
+  "started_or_finished_at": "2026-10-29T17:17:32.445920+00:00",
+  "max_steps": 10,
+  "steps_used": 2,
+  "input": {
+    "request_id": "example-human_review",
+    "asset_id": "M05",
+    "requested_slot": "2026-11-01T19:00+08:00",
+    "hard_requirement": true
+  },
+  "result": {
+    "request_id": "example-human_review",
+    "asset_id": "M05",
+    "status": "incomplete",
+    "review_status": "not_checked",
+    "risk_reasons": [],
+    "requested_slot": "2026-11-01T19:00+08:00",
+    "suggested_slot": null,
+    "pending_items": [],
+    "save": {
+      "save_status": "not_attempted"
+    },
+    "published": false,
+    "decision_summary": "Insufficient information, availability, or tool observations to complete scheduling."
+  },
+  "trace": [
+    {
+      "step": 1,
+      "tool": "read_asset",
+      "arguments": {
+        "asset_id": "M05"
+      },
+      "reason": "Inspect the requested asset before evaluating metadata, rules, and scheduling.",
+      "observation": {
+        "ok": true,
+        "asset": {
+          "title": "人工复核素材",
+          "description": "需人工判断的合成示例",
+          "rights": "cleared",
+          "owner": "demo-content-team",
+          "needs_human_review": true
+        },
+        "missing": []
+      },
+      "next_action": "finish"
+    },
+    {
+      "step": 2,
+      "tool": "finish",
+      "arguments": {
+        "reason": "Asset M05 is flagged needs_human_review. Human review is required before any scheduling or draft creation."
+      },
+      "reason": "Review-risk asset requires human review; do not schedule or publish.",
+      "observation": {
+        "ok": true,
+        "loop_finished": true
+      },
+      "next_action": "end:completed"
+    }
+  ]
+}

@@ -3,6 +3,7 @@ import json
 import os
 import urllib.error
 import urllib.request
+from urllib.parse import urlsplit, urlunsplit
 from .domain import SYSTEM
 
 
@@ -24,8 +25,21 @@ class OpenAICompatibleModel:
         self.model = os.environ.get('MODEL_NAME', '')
         if not self.key or not self.model:
             raise ModelError('MODEL_API_KEY and MODEL_NAME are required; no automatic mock fallback')
-        if not self.base.startswith('https://') and not self.base.startswith('http://localhost:') and not self.base.startswith('http://127.0.0.1:'):
-            raise ModelError('use HTTPS, except for local model endpoints')
+        try:
+            parsed = urlsplit(self.base)
+            valid = (parsed.scheme in ('http', 'https') and parsed.hostname
+                     and parsed.username is None and parsed.password is None
+                     and not parsed.query and not parsed.fragment)
+            parsed.port  # Validate port without printing the possibly sensitive URL.
+        except ValueError:
+            valid = False
+        if not valid:
+            raise ModelError('invalid MODEL_BASE_URL; use an HTTP(S) endpoint without credentials, query or fragment')
+        if (parsed.scheme == 'http' and parsed.hostname not in ('localhost', '127.0.0.1', '::1')
+                and os.environ.get('MODEL_ALLOW_HTTP') != '1'):
+            raise ModelError('remote HTTP requires explicit MODEL_ALLOW_HTTP=1; HTTPS is the default')
+        # Accept a gateway origin as well as an explicit API prefix.
+        self.base = urlunsplit((parsed.scheme, parsed.netloc, parsed.path or '/v1', '', ''))
 
     def decide(self, request, history):
         messages = [{'role': 'system', 'content': SYSTEM},

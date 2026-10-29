@@ -2,7 +2,7 @@
 
 小影校招 AI Agent 开发项目题 **第 1 题**。审核素材、补查元数据、发现时段冲突并保存排期草稿；所有结果均为草稿，没有真实发布入口。
 
-**当前验证：38 项自动化测试、13 组离线验收全部通过。真实模型接口已实现，尚未配置密钥、尚未进行真实模型决策验证。** Mock 仅证明工具和流程，不作为真实 ReAct 效果证据。
+**当前验证：49 项自动化测试、13 组离线验收、13 组真实 deepseek-flash 验收全部通过。** 真实调用使用提交者指定的网关。Mock 只证明工具和流程，真实模型结果单独保存在 `examples/live/`；首轮真实验收失败记录保留在 `examples/live-initial/`。
 
 ## 评审入口
 
@@ -13,6 +13,7 @@
 - [开发复盘](docs/05-retrospective.md)
 - [设计参考与实现差异](docs/06-reference-and-changes.md)
 - [本次实际验证汇总](examples/mock/verification.json)、[测试原始输出](examples/mock/tests.txt)
+- [真实模型验证汇总](examples/live/verification.json)、[真实模型冲突路径](examples/live/conflict.trace.json)
 
 本项目参考了 [JasonLiu0826/xiaoying-content-scheduler-agent](https://github.com/JasonLiu0826/xiaoying-content-scheduler-agent) 的公开设计说明。当前仓库为独立 Python 实现，未复制其源码、文档、个人贡献表述或真实模型运行记录。参考版本与具体影响见 [来源说明](docs/06-reference-and-changes.md)。
 
@@ -72,9 +73,22 @@ python -m scheduler --input examples/mock/normal.input.json --db .runtime/limit.
 
 退出码：`0` 表示有明确处理结果（草稿保存、待确认、规则阻断或人工复核）；`2` 表示资料不足、工具/模型错误、保存失败、执行未完成或报告写入错误。自动化评审还应读取 JSON 的业务状态，不只看退出码。
 
-## 真实模型接入（待用户配置）
+## 真实模型接入
 
-支持提供 `/chat/completions`、`response_format: json_object` 的兼容服务。模型每轮生成一个 JSON 动作，实际工具结果进入下一轮上下文。没有任何运行时自动降级成 Mock 的行为。`.env.example` 仅为模板，程序不会自动加载 `.env`。
+支持提供 `/chat/completions`、`response_format: json_object` 的兼容服务。模型每轮生成一个 JSON 动作，实际工具结果进入下一轮上下文。没有任何运行时自动降级成 Mock 的行为。
+
+将 `.env.example` 复制为 `.env`，填写 `MODEL_API_KEY`、`MODEL_BASE_URL`、`MODEL_NAME`。真实模式自动读取当前目录的 `.env`，也可指定 `--env-file PATH`；已有进程环境变量优先。Mock 不读取密钥文件。配置文件只支持四个示例变量与整行注释、可选的成对引号，不执行命令或变量展开。
+
+为用户明确指定的远程 HTTP 网关设置 `MODEL_ALLOW_HTTP=1`；未明确启用时仍拒绝远程 HTTP。网关地址可写 origin（例如 `http://your-gateway:8000`，自动追加 `/v1`），也可填写完整 API 前缀。示例本机配置：
+
+```dotenv
+MODEL_API_KEY=仅在本机填写
+MODEL_BASE_URL=http://your-gateway:8000/v1
+MODEL_NAME=deepseek-flash
+MODEL_ALLOW_HTTP=1
+```
+
+`MODEL_NAME` 需使用网关 `/v1/models` 实际返回的模型名，不能凭空假定 `deepseek-chat` 是有效别名。`.env` 被 Git 忽略；密钥不进入 Trace 或提交。
 
 PowerShell 示例（请在本机填写，密钥不要提交）：
 
@@ -86,7 +100,7 @@ python -m scheduler --mode live --input examples/mock/conflict.input.json --db .
 python scripts/verify.py --mode live --out examples/live
 ```
 
-bash 使用 `export MODEL_API_KEY=...`、`export MODEL_BASE_URL=...`、`export MODEL_NAME=...` 设置相同变量。远程服务要求 HTTPS，本机模型服务允许 `http://localhost:端口`。请求超时 45 秒，不自动重试，不跟随重定向。
+bash 使用 `export MODEL_API_KEY=...`、`export MODEL_BASE_URL=...`、`export MODEL_NAME=...` 设置相同变量。默认使用 HTTPS；本机回环服务允许 HTTP，用户选择的远程 HTTP 须设置上述显式开关。请求超时 45 秒，不自动重试，不跟随重定向。
 
 真实模型评估会调用模型并产生费用。完成后检查 `examples/live/verification.json`，确认用例、Trace 和审计均符合预期，再更新评估文档和提交 SHA。对方仓库的真实模型成功率不能替代本项目的验证。
 
@@ -113,4 +127,4 @@ scripts/verify.py   可复现验收与测试报告生成
 docs/               需求、方案、评估、AI 使用和复盘
 ```
 
-边界：单素材、单频道、同日整点时段。审核规则是合成短语/版权规则，不替代真实审核服务。不实现发布、UI 或多 Agent。提交前仍须补充本项目真实模型运行证据及提交者亲自完成的验证记录。
+边界：单素材、单频道、同日整点时段。审核规则是合成短语/版权规则，不替代真实审核服务。不实现发布、UI 或多 Agent。提交者亲自完成的验证和学习记录仍须如实补充。

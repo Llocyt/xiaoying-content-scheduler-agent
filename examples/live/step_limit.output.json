@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "mode": "live",
+  "model": "deepseek-flash",
+  "started_or_finished_at": "2026-10-29T17:20:53.016539+00:00",
+  "max_steps": 1,
+  "steps_used": 1,
+  "input": {
+    "request_id": "example-step_limit",
+    "asset_id": "M01",
+    "requested_slot": "2026-11-01T19:00+08:00",
+    "hard_requirement": true
+  },
+  "result": {
+    "request_id": "example-step_limit",
+    "asset_id": "M01",
+    "status": "step_limit",
+    "review_status": "not_checked",
+    "risk_reasons": [],
+    "requested_slot": "2026-11-01T19:00+08:00",
+    "suggested_slot": null,
+    "pending_items": [],
+    "save": {
+      "save_status": "not_attempted"
+    },
+    "published": false,
+    "decision_summary": "Execution limit reached; work incomplete. Inspect save for any already persisted draft."
+  },
+  "trace": [
+    {
+      "step": 1,
+      "tool": "read_asset",
+      "arguments": {
+        "asset_id": "M01"
+      },
+      "reason": "Read the requested asset before reviewing metadata and rules.",
+      "observation": {
+        "ok": true,
+        "asset": {
+          "title": "秋日剪辑教程",
+          "description": "合成素材：用小影制作秋日短片",
+          "rights": "cleared",
+          "owner": "demo-content-team"
+        },
+        "missing": []
+      },
+      "next_action": "end:step_limit"
+    }
+  ]
+}

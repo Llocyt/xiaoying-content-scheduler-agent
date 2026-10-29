@@ -1,0 +1,109 @@
+[
+  {
+    "step": 1,
+    "tool": "read_asset",
+    "arguments": {
+      "asset_id": "M01"
+    },
+    "reason": "Start by reading the requested asset to review its content and scheduling constraints.",
+    "observation": {
+      "ok": true,
+      "asset": {
+        "title": "秋日剪辑教程",
+        "description": "合成素材：用小影制作秋日短片",
+        "rights": "cleared",
+        "owner": "demo-content-team"
+      },
+      "missing": []
+    },
+    "next_action": "check_rules"
+  },
+  {
+    "step": 2,
+    "tool": "check_rules",
+    "arguments": {},
+    "reason": "Asset read succeeded and required metadata is present; check scheduling and review rules before processing the requested slot.",
+    "observation": {
+      "ok": true,
+      "status": "passed",
+      "reasons": []
+    },
+    "next_action": "query_slots"
+  },
+  {
+    "step": 3,
+    "tool": "query_slots",
+    "arguments": {
+      "slot": "2026-11-01T18:00+08:00",
+      "alternatives": false
+    },
+    "reason": "Asset read and rules check passed; now verify availability of the hard-requested slot.",
+    "observation": {
+      "ok": true,
+      "slots": [
+        {
+          "slot": "2026-11-01T18:00+08:00",
+          "available": false
+        }
+      ]
+    },
+    "next_action": "query_slots"
+  },
+  {
+    "step": 4,
+    "tool": "query_slots",
+    "arguments": {
+      "slot": "2026-11-01T18:00+08:00",
+      "alternatives": true
+    },
+    "reason": "Requested hard slot 2026-11-01T18:00+08:00 is unavailable; query same-day alternatives before deciding.",
+    "observation": {
+      "ok": true,
+      "slots": [
+        {
+          "slot": "2026-11-01T18:00+08:00",
+          "available": false
+        },
+        {
+          "slot": "2026-11-01T17:00+08:00",
+          "available": false
+        },
+        {
+          "slot": "2026-11-01T19:00+08:00",
+          "available": true
+        }
+      ]
+    },
+    "next_action": "save_draft"
+  },
+  {
+    "step": 5,
+    "tool": "save_draft",
+    "arguments": {
+      "slot": "2026-11-01T19:00+08:00"
+    },
+    "reason": "Requested hard slot 18:00 is unavailable. Save the same-day 19:00 alternative as a pending-confirmation draft; it is not confirmed.",
+    "observation": {
+      "ok": true,
+      "save_status": "saved",
+      "draft_id": "draft-e977fbee3703096e",
+      "asset_id": "M01",
+      "requested_slot": "2026-11-01T18:00+08:00",
+      "suggested_slot": "2026-11-01T19:00+08:00",
+      "confirmation_status": "pending",
+      "published": false
+    },
+    "next_action": "finish"
+  },
+  {
+    "step": 6,
+    "tool": "finish",
+    "arguments": {},
+    "reason": "Asset read and rules passed. The hard-requested 18:00 slot is unavailable; a same-day 19:00 alternative was saved as a pending-confirmation draft (not confirmed, not published). No further action without explicit user confirmation.",
+    "observation": {
+      "ok": true,
+      "loop_finished": true
+    },
+    "next_action": "end:completed"
+  }
+]

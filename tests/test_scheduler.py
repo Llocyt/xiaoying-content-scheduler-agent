@@ -222,6 +222,46 @@ class SchedulerTests(unittest.TestCase):
                 return {'tool': 'save_draft'}
         self.assertEqual(run_agent(self.request(), BadModel(), self.tools())['result']['status'], 'model_error')
 
+    def test_model_corrects_format_after_runtime_observation(self):
+        class RepairModel:
+            mode = 'mock'
+            def decide(self, request, history):
+                if not history:
+                    return {'bad': 'response'}
+                self_error = history[-1]['observation']['error']
+                if self_error != 'invalid_action_schema':
+                    raise AssertionError('Correction observation missing')
+                return {'tool': 'finish', 'arguments': {}, 'reason': 'Corrected format.'}
+        report = run_agent(self.request(), RepairModel(), self.tools())
+        self.assertEqual(report['result']['status'], 'incomplete')
+        self.assertEqual(report['steps_used'], 2)
+        self.assertEqual(report['trace'][0]['next_action'], 'finish')
+
+    def test_schema_repair_is_inside_execution_limit(self):
+        class BadModel:
+            mode = 'mock'
+            def decide(self, *_):
+                return {'bad': 'response'}
+        report = run_agent(self.request(), BadModel(), self.tools(), max_steps=1)
+        self.assertEqual(report['result']['status'], 'step_limit')
+        self.assertEqual(report['steps_used'], 1)
+
+    def test_model_must_observe_rules_before_finishing(self):
+        class EarlyFinishModel:
+            mode = 'mock'
+            def decide(self, request, history):
+                if not history:
+                    return {'tool': 'read_asset', 'arguments': {'asset_id': 'M05'}, 'reason': 'Read.'}
+                if history[-1]['tool'] == 'read_asset':
+                    return {'tool': 'finish', 'arguments': {}, 'reason': 'Human review needed.'}
+                if not history[-1]['observation'].get('ok'):
+                    return {'tool': 'check_rules', 'arguments': {}, 'reason': 'Observe authoritative rule result.'}
+                return {'tool': 'finish', 'arguments': {}, 'reason': 'Report observed review result.'}
+        request = self.request(asset_id='M05')
+        report = run_agent(request, EarlyFinishModel(), self.tools(request))
+        self.assertEqual(report['result']['status'], 'review_required')
+        self.assertEqual(report['trace'][1]['observation']['error'], 'review_observation_required')
+
     def test_hallucinated_completion_cannot_save(self):
         class LiarModel:
             mode = 'mock'

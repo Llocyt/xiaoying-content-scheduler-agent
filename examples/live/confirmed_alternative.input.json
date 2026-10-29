@@ -1,0 +1,7 @@
+{
+  "request_id": "example-confirmed_alternative",
+  "asset_id": "M01",
+  "requested_slot": "2026-11-01T18:00+08:00",
+  "hard_requirement": true,
+  "confirmed_slot": "2026-11-01T19:00+08:00"
+}
